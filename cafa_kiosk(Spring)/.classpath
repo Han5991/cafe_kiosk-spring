@@ -31,5 +31,12 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/admin/git/cafe_kiosk-spring/cafa_kiosk(Spring)/src/main/webapp/WEB-INF/lib/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/admin/git/cafe_kiosk-spring/cafa_kiosk(Spring)/src/main/webapp/WEB-INF/lib/cos.jar"/>
+	<classpathentry kind="lib" path="C:/Users/admin/git/cafe_kiosk-spring/cafa_kiosk(Spring)/src/main/webapp/WEB-INF/lib/gson-2.8.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/admin/git/cafe_kiosk-spring/cafa_kiosk(Spring)/src/main/webapp/WEB-INF/lib/jstl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/admin/git/cafe_kiosk-spring/cafa_kiosk(Spring)/src/main/webapp/WEB-INF/lib/ojdbc8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/admin/git/cafe_kiosk-spring/cafa_kiosk(Spring)/src/main/webapp/WEB-INF/lib/standard.jar"/>
+	<classpathentry kind="lib" path="C:/Users/admin/git/cafe_kiosk-spring/cafa_kiosk(Spring)/src/main/webapp/WEB-INF/lib/tomcat-dbcp.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
