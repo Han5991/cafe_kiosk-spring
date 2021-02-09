@@ -20,7 +20,7 @@ import javax.websocket.Session;
 
 @Controller
 @ServerEndpoint(value = "/webChatServer")
-public class WebChatServer extends HttpServlet {
+public class WebSoketServer extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static Map<Session, ClientDto> users = Collections.synchronizedMap(new HashMap<Session, ClientDto>());
@@ -48,7 +48,7 @@ public class WebChatServer extends HttpServlet {
 
 		client.setName(ClientDto.getinstance().getName());
 		if (client.getName().equals("admin"))
-			WebChatServer.session = session;
+			WebSoketServer.session = session;
 
 		System.out.println(session + " connect");
 

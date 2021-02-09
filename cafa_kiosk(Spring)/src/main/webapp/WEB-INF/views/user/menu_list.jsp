@@ -1,6 +1,4 @@
-<%@page import="com.model.dto.MenuDto"%>
-<%@page import="com.model.dao.MenuDao"%>
-<%@page import="java.util.ArrayList"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -117,125 +115,98 @@ input {
 		</div>
 
 		<div class="coffee">
-			<%
-				ArrayList<MenuDto> menuDtos1 = MenuDao.getInstance().allmenuType("espresso");
-			for (MenuDto menuDto : menuDtos1) {
-			%>
-			<div class="menu">
-				<p>
-					<img src="../showImage?key1=<%=menuDto.getName()%>" height="200px"
-						width="200px" name="img">
-				</p>
-				<p>
-					<input value="<%=menuDto.getName()%>" name="name1"
-						readonly="readonly">
-				</p>
-				<p>
-					<input value="<%=menuDto.getPrice()%>" name="price1"
-						readonly="readonly">
-				</p>
-			</div>
-			<%
-				}
-			%>
+			<c:forEach var="MenuDto" items="${coffee}">
+				<div class="menu">
+					<p>
+						<img src="showImage?key1=<c:out value="${MenuDto.name}" />"
+							height="200px" width="200px" name="img">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.name}" />" name="name1"
+							readonly="readonly">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.price}" />" name="price1"
+							readonly="readonly">
+					</p>
+				</div>
+			</c:forEach>
 		</div>
 
 		<div class="blended">
-			<%
-				ArrayList<MenuDto> menuDtos2 = MenuDao.getInstance().allmenuType("blended");
-			for (MenuDto menuDto : menuDtos2) {
-			%>
-			<div class="menu">
-				<p>
-					<img src="../showImage?key1=<%=menuDto.getName()%>" height="200px"
-						width="200px" name="img">
-				</p>
-				<p>
-					<input value="<%=menuDto.getName()%>" name="name1"
-						readonly="readonly">
-				</p>
-				<p>
-					<input value="<%=menuDto.getPrice()%>" name="price1"
-						readonly="readonly">
-				</p>
-			</div>
-			<%
-				}
-			%>
+			<c:forEach var="MenuDto" items="${blended}">
+				<div class="menu">
+					<p>
+						<img src="showImage?key1=<c:out value="${MenuDto.name}" />"
+							height="200px" width="200px" name="img">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.name}" />" name="name1"
+							readonly="readonly">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.price}" />" name="price1"
+							readonly="readonly">
+					</p>
+				</div>
+			</c:forEach>
 		</div>
 
 		<div class="etc">
-			<%
-				ArrayList<MenuDto> menuDtos3 = MenuDao.getInstance().allmenuType("etc");
-			for (MenuDto menuDto : menuDtos3) {
-			%>
-			<div class="menu">
-				<p>
-					<img src="../showImage?key1=<%=menuDto.getName()%>" height="200px"
-						width="200px" name="img">
-				</p>
-				<p>
-					<input value="<%=menuDto.getName()%>" name="name1"
-						readonly="readonly">
-				</p>
-				<p>
-					<input value="<%=menuDto.getPrice()%>" name="price1"
-						readonly="readonly">
-				</p>
-			</div>
-			<%
-				}
-			%>
+			<c:forEach var="MenuDto" items="${etc}">
+				<div class="menu">
+					<p>
+						<img src="showImage?key1=<c:out value="${MenuDto.name}" />"
+							height="200px" width="200px" name="img">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.name}" />" name="name1"
+							readonly="readonly">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.price}" />" name="price1"
+							readonly="readonly">
+					</p>
+				</div>
+			</c:forEach>
 		</div>
 
 		<div class="tea">
-			<%
-				ArrayList<MenuDto> menuDtos4 = MenuDao.getInstance().allmenuType("tea");
-			for (MenuDto menuDto : menuDtos4) {
-			%>
-			<div class="menu">
-				<p>
-					<img src="../showImage?key1=<%=menuDto.getName()%>" height="200px"
-						width="200px" name="img">
-				</p>
-				<p>
-					<input value="<%=menuDto.getName()%>" name="name1"
-						readonly="readonly">
-				</p>
-				<p>
-					<input value="<%=menuDto.getPrice()%>" name="price1"
-						readonly="readonly">
-				</p>
-			</div>
-			<%
-				}
-			%>
+			<c:forEach var="MenuDto" items="${tea}">
+				<div class="menu">
+					<p>
+						<img src="showImage?key1=<c:out value="${MenuDto.name}" />"
+							height="200px" width="200px" name="img">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.name}" />" name="name1"
+							readonly="readonly">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.price}" />" name="price1"
+							readonly="readonly">
+					</p>
+				</div>
+			</c:forEach>
 		</div>
 
 		<div class="dessert">
-			<%
-				ArrayList<MenuDto> menuDtos5 = MenuDao.getInstance().allmenuType("dessert");
-			for (MenuDto menuDto : menuDtos5) {
-				if (menuDto.getStock() > 0) {
-			%>
-			<div class="menu">
-				<p>
-					<img src="../showImage?key1=<%=menuDto.getName()%>" height="200px"
-						width="200px" name="img">
-				</p>
-				<p>
-					<input value="<%=menuDto.getName()%>" name="name1"
-						readonly="readonly">
-				</p>
-				<p>
-					<input value="<%=menuDto.getPrice()%>" name="price1"
-						readonly="readonly">
-				</p>
-			</div>
-			<%
-				}
-			}
-			%>
+			<c:forEach var="MenuDto" items="${dessert}">
+				<div class="menu">
+					<p>
+						<img src="showImage?key1=<c:out value="${MenuDto.name}" />"
+							height="200px" width="200px" name="img">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.name}" />" name="name1"
+							readonly="readonly">
+					</p>
+					<p>
+						<input value="<c:out value="${MenuDto.price}" />" name="price1"
+							readonly="readonly">
+					</p>
+				</div>
+			</c:forEach>
 		</div>
 	</div>
 </body>

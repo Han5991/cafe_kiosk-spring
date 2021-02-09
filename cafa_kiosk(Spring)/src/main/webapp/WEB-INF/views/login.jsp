@@ -60,9 +60,8 @@ footer {
 			<div class="col-sm-12 text-center">
 				<h1>로그인</h1>
 				<hr>
-
 				<h3>Login coffee shop</h3>
-				<form action="/loginProcess.do" method="post" id="form">
+				<form action="loginProcess.do" method="post" id="form">
 					<div id="id">
 						ID:<input type="text" placeholder="id" name="id">
 					</div>
