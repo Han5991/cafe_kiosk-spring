@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -35,7 +36,7 @@ table {
 
 	<!-- Navigation -->
 	<%@ include file="../navbar_user.jsp"%>
-	<span> 총 합계 금액 : <br> <c:out value="${sum}"/>원 <br>
+	<span> 총 합계 금액 : <br> <fmt:formatNumber value="${sum}" groupingUsed="true"/>원 <br>
 		<br> <input type="button" value="메뉴 다시선택"
 		style="font-size: 30px;" onclick="back();"><br> <br>
 		<input type="button" value="주문 하기" style="font-size: 30px;"
@@ -54,8 +55,8 @@ table {
 					height="200px"></td>
 				<td><c:out value="${oderDto.menu}" /></td>
 				<td><c:out value="${oderDto.quantity}" /></td>
-				<td><c:out value="${oderDto.price}" /></td>
-				<td><c:out value="${oderDto.price*oderDto.quantity}" /></td>
+				<td><fmt:formatNumber value="${oderDto.price}" groupingUsed="true"/></td>
+				<td><fmt:formatNumber value="${oderDto.quantity*oderDto.price}" groupingUsed="true"/></td>
 			</tr>
 		</c:forEach>
 	</table>
