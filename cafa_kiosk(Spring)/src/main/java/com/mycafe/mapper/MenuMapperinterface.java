@@ -16,22 +16,16 @@ public interface MenuMapperinterface {
 //데이터 컬럼의 값을 빈 어디에 넣을 것인가를 설정
 //	@Results({ @Result(column = "int_data", property = "int_data"),
 //			@Result(column = "str_data", property = "str_data") })
-//	// 추상 메서드로 정의
-//
-//	@Select("select int_data from jdbc_table")
-//	List<JdbcBean> select_int();
-//
-//	@Insert("insert into jdbc_table values(#{int_data},#{str_data})")
-//	void insert_data(JdbcBean bean);
 
-//	@Results({ @Result(column = "imgname", property = "filename") })
-// 추상 메서드로 정의
-//	@Select("select * from menu")
-//	List<MenuDto> select_data();
-
+	@Select("SELECT * FROM menu")
+	ArrayList<MenuDto> allmenu();
+	
 	@Select("SELECT * FROM menu where imgname LIKE '${type}%'")
 	ArrayList<MenuDto> allmenuType(String type);
-
+	
+	@Select("SELECT * FROM menu where name='${name}'")
+	MenuDto onemenu(String name);
+	
 	@Insert("insert into jdbc_table values(#{int_data},#{str_data})")
 //	void insert_data(JdbcBean bean);
 

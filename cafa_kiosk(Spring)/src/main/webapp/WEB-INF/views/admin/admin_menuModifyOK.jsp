@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="com.model.dao.MenuDao"%>
-<%@page import="com.model.dto.MenuDto"%>
-<%
-	MenuDto menuDto = MenuDao.getInstance().oneMenu(request.getParameter("name"));
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,7 +38,7 @@ img {
 		enctype="multipart/form-data">
 		<div style="margin: 0 auto;">
 			<p>
-				<img src="../showImage?key1=<%=menuDto.getName()%>" id="loadImg"
+				<img src="showImage?key1=<c:out value="${MenuDto.name}"/>" id="loadImg"
 					width="300px" height="300px" style="margin-top: 20px;">
 			</p>
 			<p>
@@ -64,15 +60,15 @@ img {
 			<p>
 				메뉴 : <input type="text" name="name" placeholder="name"
 					autocomplete="off" required="required"
-					value="<%=menuDto.getName()%>">
+					value="<c:out value="${MenuDto.name}"/>">
 			</p>
 			<p>
 				가격 : <input type="text" name="price" placeholder="price"
 					autocomplete="off" required="required"
-					value="<%=menuDto.getPrice()%>">
+					value="<c:out value="${MenuDto.price}"/>">
 			</p>
 			<p>
-				<input type="hidden" value="<%=menuDto.getFilename()%>"
+				<input type="hidden" value="<c:out value="${MenuDto.imgname}"/>"
 					name="filename"> <input type="submit" value="수정"
 					onclick="infoConfirm()">
 			</p>

@@ -34,7 +34,7 @@ public class MenuDao extends HttpServlet {
 	private static MenuDao admin = new MenuDao();
 	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BeanConfigClass.class);
 	MenuMapperinterface menuMapperinterface = context.getBean(MenuMapperinterface.class);
-	
+
 	public static synchronized MenuDao getInstance() {
 		return admin;
 	}
@@ -59,9 +59,26 @@ public class MenuDao extends HttpServlet {
 				connection.close();
 			if (preparedStatement != null)
 				preparedStatement.close();
+			if (resultSet != null)
+				resultSet.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ArrayList<MenuDto> allmenu() {
+		ArrayList<MenuDto> menus = menuMapperinterface.allmenu();
+		return menus;
+	}
+
+	public ArrayList<MenuDto> allmenuType(String type) {
+		ArrayList<MenuDto> menus = menuMapperinterface.allmenuType(type);
+		return menus;
+	}
+
+	public MenuDto oneMenu(String name) {
+		MenuDto menuDto = menuMapperinterface.onemenu(name);
+		return menuDto;
 	}
 
 	public int insertMenu(HttpServletRequest request) {
@@ -73,7 +90,7 @@ public class MenuDao extends HttpServlet {
 		int rownum = 0;
 		int price = 0;
 
-		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk\\cafe_kiosk\\src\\main\\webapp\\resources\\img";
+		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk-spring\\cafa_kiosk(Spring)\\src\\main\\webapp\\resources\\img";
 		getCon();
 		try {
 			multi = new MultipartRequest(request, uploadPath, fileSize, "UTF-8", new DefaultFileRenamePolicy());
@@ -107,7 +124,7 @@ public class MenuDao extends HttpServlet {
 	}
 
 	public int deleteMenu(String name) {
-		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk\\cafe_kiosk\\src\\main\\webapp\\resources\\img";
+		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk-spring\\cafa_kiosk(Spring)\\src\\main\\webapp\\resources\\img";
 		int result = 0;
 		boolean de = false;
 		getCon();
@@ -132,63 +149,6 @@ public class MenuDao extends HttpServlet {
 		return result;
 	}
 
-	public ArrayList<MenuDto> allmenu() {
-		ArrayList<MenuDto> menus = new ArrayList<MenuDto>();
-		getCon();
-
-		try {
-			String sql = "SELECT * FROM menu";
-			preparedStatement = connection.prepareStatement(sql);
-			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				MenuDto menuDto = new MenuDto();
-				menuDto.setName(resultSet.getString(1));
-				menuDto.setPrice(resultSet.getInt(2));
-				menuDto.setImgname(resultSet.getString(4));
-				menuDto.setStock(resultSet.getInt(5));
-				menus.add(menuDto);
-			}
-			connection.close();
-			preparedStatement.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return menus;
-	}
-
-	public ArrayList<MenuDto> allmenuType(String type) {
-		ArrayList<MenuDto> menus = menuMapperinterface.allmenuType(type);
-		return menus;
-	}
-
-	public MenuDto oneMenu(String name) {
-		MenuDto menuDto = new MenuDto();
-		getCon();
-		try {
-			String sql = "SELECT * FROM menu where name=?";
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, name);
-			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				menuDto.setName(resultSet.getString(1));
-				menuDto.setPrice(resultSet.getInt(2));
-				menuDto.setImgname(resultSet.getString(4));
-				menuDto.setStock(resultSet.getInt(5));
-			}
-
-			connection.close();
-			preparedStatement.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-
-		return menuDto;
-	}
-
 	public int updateMenu(HttpServletRequest request) {
 		int result = 0;
 		getCon();
@@ -201,7 +161,7 @@ public class MenuDao extends HttpServlet {
 		int rownum = 0;
 		int price = 0;
 		boolean update = false;
-		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk\\cafe_kiosk\\src\\main\\webapp\\resources\\img";
+		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk-spring\\cafa_kiosk(Spring)\\src\\main\\webapp\\resources\\img";
 		try {
 			multi = new MultipartRequest(request, uploadPath, fileSize, "UTF-8", new DefaultFileRenamePolicy());
 			name = multi.getParameter("name");

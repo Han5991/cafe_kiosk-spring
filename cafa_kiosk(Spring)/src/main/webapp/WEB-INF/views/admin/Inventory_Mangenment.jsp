@@ -1,12 +1,6 @@
-<%@page import="com.model.dao.MenuDao"%>
-<%@page import="com.model.dto.MenuDto"%>
-<%@page import="java.util.ArrayList"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	ArrayList<MenuDto> menuDtos = new ArrayList<MenuDto>();
-menuDtos = MenuDao.getInstance().allmenuType("dessert%");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,24 +56,21 @@ input {
 				<td>현재고(개)</td>
 				<td>입고후재고(개)</td>
 			</tr>
-			<%
-				for (MenuDto menuDto : menuDtos) {
-			%>
-			<tr>
-				<td><%=menuDto.getName()%><input type="hidden"
-					value="<%=menuDto.getName()%>" name="menu"></td>
-				<td><%=menuDto.getPrice()%>원</td>
-				<td><input type="button" value="-" name="maineoseu"><input
-					type="text" value="0" class="stock1"><input type="button"
-					value="+" name="plus"></td>
-				<td><input type="text" value="<%=menuDto.getStock()%>"
-					readonly="readonly" class="stock2"></td>
-				<td><input type="text" readonly="readonly" name="stock3"
-					value="<%=menuDto.getStock()%>"></td>
-			</tr>
-			<%
-				}
-			%>
+			<c:forEach var="MenuDto" items="${dessert}">
+				<tr>
+					<td><c:out value="${MenuDto.name}" /><input type="hidden"
+						value="<c:out value="${MenuDto.name}" />" name="menu"></td>
+					<td><c:out value="${MenuDto.price}" />원</td>
+					<td><input type="button" value="-" name="maineoseu"><input
+						type="text" value="0" class="stock1"><input type="button"
+						value="+" name="plus"></td>
+					<td><input type="text"
+						value="<c:out value="${MenuDto.stock}" />" readonly="readonly"
+						class="stock2"></td>
+					<td><input type="text" readonly="readonly" name="stock3"
+						value="<c:out value="${MenuDto.stock}" />"></td>
+				</tr>
+			</c:forEach>
 		</table>
 
 		<footer class="container-fluid text-center">

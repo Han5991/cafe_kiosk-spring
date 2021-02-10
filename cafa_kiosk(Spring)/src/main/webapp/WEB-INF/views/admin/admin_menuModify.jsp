@@ -1,6 +1,4 @@
-<%@page import="com.model.dao.MenuDao"%>
-<%@page import="com.model.dto.MenuDto"%>
-<%@page import="java.util.ArrayList"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -42,25 +40,20 @@ img {
 	<h1 style="text-align: center;">메뉴 수정 페이지</h1>
 	<hr>
 	<div style="margin: 0 auto;">
-		<%
-			ArrayList<MenuDto> menuDtos = MenuDao.getInstance().allmenu();
-		for (MenuDto menu : menuDtos) {
-		%>
-		<form action="admin_menuModify.do">
-			<div class="menu">
-				<p>
-					<img src="../showImage?key1=<%=menu.getName()%>" />
-				</p>
-				<p><%=menu.getName()%></p>
-				<p>
-					<input type="submit" value="수정하기">
-				</p>
-				<input type="hidden" name="name" value="<%=menu.getName()%>">
-			</div>
-		</form>
-		<%
-			}
-		%>
+		<c:forEach var="MenuDto" items="${menuDtos}">
+			<form action="admin_menuModify.do">
+				<div class="menu">
+					<p>
+						<img src="showImage?key1=<c:out value="${MenuDto.name}"/>" />
+					</p>
+					<p><c:out value="${MenuDto.name}"/></p>
+					<p>
+						<input type="submit" value="수정하기">
+					</p>
+					<input type="hidden" name="name" value="<c:out value="${MenuDto.name}"/>">
+				</div>
+			</form>
+		</c:forEach>
 	</div>
 </body>
 </html>
