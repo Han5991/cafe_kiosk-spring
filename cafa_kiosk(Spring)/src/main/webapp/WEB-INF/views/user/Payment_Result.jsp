@@ -1,15 +1,8 @@
-<%@page import="com.model.dao.OderDao"%>
-<%@page import="com.model.dto.oderDto"%>
-<%@page import="java.util.ArrayList"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	ArrayList<oderDto> oderDtos = new ArrayList<oderDto>();
-oderDtos = (ArrayList<oderDto>) session.getAttribute("oderlist");
-String sum = (String) session.getAttribute("sum");
 
-int odernum = OderDao.getInstance().insertOder(oderDtos, sum);
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,7 +49,7 @@ img {
 <body>
 	<%@ include file="../navbar_user.jsp"%>
 	<div id="pop">
-		<input type="hidden" name="odernum" value="<%=odernum%>"> <input
+		<input type="hidden" name="odernum" value="${odernum}"> <input
 			id="btn-submit" type="submit" value="카드를 뽑아주세요"
 			onclick="javascript:document.location.href='menulist.do'">
 	</div>
@@ -66,7 +59,7 @@ img {
 			<table class="table">
 				<thead style="font-size: 60px; text-align: center">
 					<tr>
-						<td><sup><%=odernum%>번 결제가 성공적으로 완료되었습니다.</sup></td>
+						<td><sup>${odernum}번 결제가 성공적으로 완료되었습니다.</sup></td>
 					</tr>
 				</thead>
 				<tr>
@@ -89,11 +82,11 @@ img {
 					<tbody>
 						<tr>
 							<td>일반제품</td>
-							<td><%=sum%>원</td>
+							<td>${sum}원</td>
 						</tr>
 						<tr>
 							<td>총 합계 금액</td>
-							<td><%=sum%>원</td>
+							<td>${sum}원</td>
 						</tr>
 					</tbody>
 				</table>
@@ -129,21 +122,18 @@ img {
 						<td>
 							<div>
 								<table class="table">
-									<%
-										for (oderDto dto : oderDtos) {
-										int price = Integer.parseInt(dto.getPrice());
-										int Quantity = Integer.parseInt(dto.getQuantity());
-									%>
-									<tr>
-										<td><img src="../showImage?key1=<%=dto.getMenu()%>"
-											width="150" height="150" /></td>
-										<td><%=dto.getMenu()%></td>
-										<td><%=Quantity%></td>
-										<td><%=price * Quantity%></td>
-									</tr>
-									<%
-										}
-									%>
+									<c:forEach var="oderDto" items="${oderDtos}">
+										<tr>
+											<td><img
+												src="showImage?key1=<c:out value="${oderDto.menu}" />"
+												width="150" height="150" /></td>
+											<td><c:out value="${oderDto.menu}" /></td>
+											<td><c:out value="${oderDto.quantity}" /></td>
+											<td><fmt:formatNumber
+													value="${oderDto.quantity*oderDto.price}"
+													groupingUsed="true" /></td>
+										</tr>
+									</c:forEach>
 								</table>
 							</div>
 						</td>
@@ -152,7 +142,7 @@ img {
 						<td></td>
 						<td></td>
 						<td>총 주문 금액</td>
-						<td><%=sum%>원</td>
+						<td>${sum}원</td>
 					</tr>
 				</table>
 			</div>
@@ -173,13 +163,11 @@ img {
 	%>
 </body>
 <script type="text/javascript">
-	if (
-<%=odernum%>
-	== 0) {
+	if (${odernum} == 0) {
 		alert("결제에 실패하였습니다.");
 		history.back();
 	}
-	var webSocket = new WebSocket('ws://localhost:8080/webChatServer');
+	var webSocket = new WebSocket('ws://localhost:8080/kiosk/webChatServer');
 	webSocket.onerror = function(e) {
 		onError(e);
 	};
@@ -201,6 +189,7 @@ img {
 	}
 	function send() {
 		var chatMsg = $('input[name=odernum]').val();
+		alert("주문이 완료 되었습니다.");
 		webSocket.send(chatMsg);
 	}
 	$('#btn-submit').click(function() {

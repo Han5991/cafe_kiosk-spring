@@ -8,6 +8,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.springframework.stereotype.Controller;
 
 import com.mycafe.beans.ClientDto;
+import com.mycafe.dao.OderDao;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -29,7 +30,8 @@ public class WebSoketServer extends HttpServlet {
 	@OnMessage
 	public void onMsg(String message, Session session) throws IOException {
 //		String userName = users.get(session).getName();
-//		message = OderDao.getInstance().getOneOder(message);
+		message = OderDao.getInstance().getOneOder(message);
+		System.out.println("여기 나와? : "+message);
 		synchronized (users) {
 //			WebChatServer.session.getBasicRemote().sendText( message+ ","+userName);
 //			WebChatServer.session.getBasicRemote().sendText(message);
@@ -47,8 +49,8 @@ public class WebSoketServer extends HttpServlet {
 		ClientDto client = new ClientDto();
 
 		client.setName(ClientDto.getinstance().getName());
-		if (client.getName().equals("admin"))
-			WebSoketServer.session = session;
+//		if (client.getName().equals("admin"))
+//			WebSoketServer.session = session;
 
 		System.out.println(session + " connect");
 
@@ -75,7 +77,7 @@ public class WebSoketServer extends HttpServlet {
 
 	@OnClose
 	public void onClose(Session session) {
-		String userName = users.get(session).getName();
+//		String userName = users.get(session).getName();
 		users.remove(session);
 //		sendNotice(userName + "님이 입장 하셨습니다 현재 사용자 수 : " + users.size() + "명");
 	}

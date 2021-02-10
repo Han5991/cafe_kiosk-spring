@@ -16,16 +16,18 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import com.mycafe.beans.*;
+import com.mycafe.config.BeanConfigClass;
+import com.mycafe.mapper.MenuMapperinterface;
 
 public class OderDao {
 	ResultSet resultSet;
 	Connection connection;
 	PreparedStatement preparedStatement;
+	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BeanConfigClass.class);
+	MenuMapperinterface menuMapperinterface = context.getBean(MenuMapperinterface.class);
 	private static OderDao admin = new OderDao();
 
 	public static synchronized OderDao getInstance() {
@@ -70,7 +72,7 @@ public class OderDao {
 
 		try {
 			getCon();
-			String sql = "SELECT * FROM oder where status=? ORDER BY TO_NUMBER(odernum)";
+			String sql = "SELECT * FROM oder2 where status=? ORDER BY TO_NUMBER(odernum)";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, status);
 			resultSet = preparedStatement.executeQuery();
@@ -111,7 +113,7 @@ public class OderDao {
 		String oder = "";
 		try {
 			getCon();
-			String sql = "select * from oder where odernum=?";
+			String sql = "select * from oder2 where odernum=?";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, num);
 			resultSet = preparedStatement.executeQuery();
@@ -154,7 +156,7 @@ public class OderDao {
 		getCon();
 
 		try {
-			String sql = "select oder from oder where odernum=?";
+			String sql = "select oder from oder2 where odernum=?";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, num);
 			resultSet = preparedStatement.executeQuery();
@@ -186,7 +188,7 @@ public class OderDao {
 					}
 			}
 
-			sql = "update oder set status= '조리취소' where odernum=?";
+			sql = "update oder2 set status= '조리취소' where odernum=?";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, odernum);
 			odernum = preparedStatement.executeUpdate();
@@ -204,7 +206,7 @@ public class OderDao {
 		getCon();
 
 		try {
-			String sql = "update oder set status= '조리완료' where odernum=?";
+			String sql = "update oder2 set status= '조리완료' where odernum=?";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, odernum);
 			odernum = preparedStatement.executeUpdate();
@@ -243,7 +245,7 @@ public class OderDao {
 				}
 			}
 
-			sql = "insert into oder values(seq_oder.NEXTVAL,?,to_char(sysdate,'mm.dd hh24:mi'),?,?)";
+			sql = "insert into oder2 values(seq_oder.NEXTVAL,?,to_char(sysdate,'mm.dd hh24:mi'),?,?)";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setBlob(1, b1);
 			preparedStatement.setString(2, sum);
@@ -251,7 +253,7 @@ public class OderDao {
 
 			preparedStatement.executeQuery();
 
-			sql = "SELECT MAX(TO_NUMBER(odernum)) FROM oder";
+			sql = "SELECT MAX(TO_NUMBER(odernum)) FROM oder2";
 			preparedStatement = connection.prepareStatement(sql);
 
 			resultSet = preparedStatement.executeQuery();

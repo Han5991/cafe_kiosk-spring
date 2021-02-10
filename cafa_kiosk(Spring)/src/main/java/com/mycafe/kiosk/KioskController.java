@@ -28,14 +28,16 @@ public class KioskController {
 	}
 
 	@RequestMapping(value = "/loginProcess.do", method = RequestMethod.POST)
-	public String loginProcess(@RequestParam String id, HttpServletRequest request) {
+	public String loginProcess(@RequestParam String id, Model model) {
 
 		logger.info("Welcome " + id);
 		ClientDto.getinstance().setName(id);
 
-		if (id.equals("admin"))
+		if (id.equals("admin")) {
+			ArrayList<oderlistDto> alloder = OderDao.getInstance().allOder("조리전");
+			model.addAttribute("ex", alloder);
 			return "admin/oderlist";
-		else
+		} else
 			return "user/first_page";
 	}
 
@@ -56,6 +58,12 @@ public class KioskController {
 			session.setAttribute("sum", sum);
 			returnUrl = "user/Cart";
 		} else if ("/oder.do".equals(url)) {
+			ArrayList<oderDto> oderDtos = (ArrayList<oderDto>) session.getAttribute("oderlist");
+			String sum = (String) session.getAttribute("sum");
+			int odernum = OderDao.getInstance().insertOder(oderDtos, sum);
+			System.out.println(odernum);
+			model.addAttribute("oderDtos", oderDtos);
+			model.addAttribute("odernum", odernum);
 			returnUrl = "user/Payment_Result";
 
 		} else if ("/menulist.do".equals(url)) {// 메뉴리스트에 보내줄 메뉴 불러와서 설정해줌
@@ -103,11 +111,45 @@ public class KioskController {
 		return "admin/admin_menuModify";
 	}
 
+	
+	
+	
 	@RequestMapping(value = "/inventoryUpdate.do")
 	public String updateinventory(HttpServletRequest request) {
 		MenuDao.getInstance().updateinventory(request);
 		return "admin/Inventory_Mangenment";
 	}
+
+	@RequestMapping(value = "/receiptPrint.do")
+	public String receipPrint(HttpServletRequest request,Model model) {
+		String num = request.getParameter("odernum");
+		String oder = OderDao.getInstance().getOneOder(num);
+		request.setAttribute("oneOder", oder);
+		ArrayList<oderlistDto> alloder = OderDao.getInstance().allOder("조리전");
+		model.addAttribute("ex", alloder);
+		return "receiptPrint";
+	}
+
+	@RequestMapping(value = "/deleteOder.do")
+	public String deleteOder(HttpServletRequest request,Model model) {
+		String num = request.getParameter("odernum");
+		OderDao.getInstance().deleteOder(num);
+		ArrayList<oderlistDto> alloder = OderDao.getInstance().allOder("조리전");
+		model.addAttribute("ex", alloder);
+		return "admin/oderlist";
+	}
+
+	@RequestMapping(value = "/startOder.do")
+	public String startOder(HttpServletRequest request,Model model) {
+		String num = request.getParameter("odernum");
+		OderDao.getInstance().startOder(num);
+		ArrayList<oderlistDto> alloder = OderDao.getInstance().allOder("조리전");
+		model.addAttribute("ex", alloder);
+		return "admin/oderlist";
+	}
+	
+	
+	
 
 	@RequestMapping(value = { "/admin_menuInsert", "/admin_menuDelete", "/admin_menuModify", "/admin_menuModify.do",
 			"/admin_menuinventory", "/admin_oderlist", "/admin_oderMagenment" })

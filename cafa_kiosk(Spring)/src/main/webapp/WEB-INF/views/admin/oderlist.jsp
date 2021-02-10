@@ -1,6 +1,4 @@
-<%@page import="com.mycafe.beans.*"%>
-<%@page import="com.mycafe.dao.*"%>
-<%@page import="java.util.ArrayList"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -52,39 +50,32 @@ footer {
 <body>
 	<!-- Navigation -->
 	<%@ include file="../navbar_admin.jsp"%>
-	<%
-		ArrayList<oderlistDto> alloder = new ArrayList<oderlistDto>();
-	alloder = OderDao.getInstance().allOder("조리전");
-	%>
-	<h1 style="text-align: center; font-family: hzStyleFont; font-size: 25px; font-weight: bold;">주문 접수
-		페이지</h1>
+
+	<h1
+		style="text-align: center; font-family: hzStyleFont; font-size: 25px; font-weight: bold;">주문
+		접수 페이지</h1>
 	<hr>
 	<ul id="ul">
-		<%
-			for (oderlistDto oderlistDto : alloder) {
-		%>
-		<li class="oderNum">주문번호 : <%=oderlistDto.getOdernum()%><input
-			name="oderNum" type="hidden" value="<%=oderlistDto.getOdernum()%>">
-			<br> 주문시각 : <%=oderlistDto.getOderdate()%><br>주문상태 : <%=oderlistDto.getStatus()%><br>
-			<input type="button" value="주문목록 보기" class="oderdetail">
-			<table class="detail">
-				<%
-					for (oderDto dto : oderlistDto.getOderDtos()) {
-				%>
-				<tr>
-					<td><%=dto.getMenu()%></td>
-					<td><%=dto.getQuantity()%></td>
-				</tr>
-				<%
-					}
-				%>
-			</table>
-			<p>
-				총계 :
-				<%=oderlistDto.getSum()%>원</li>
-		<%
-			}
-		%>
+		<c:forEach var="oderlistDto" items="${ex}">
+			<li class="oderNum">주문번호 : <c:out value="${oderlistDto.odernum}" /><input
+				name="oderNum" type="hidden"
+				value="<c:out value="${oderlistDto.odernum}" />"> <br>
+				주문시각 : <c:out value="${oderlistDto.oderdate}" /><br>주문상태 : <c:out
+					value="${oderlistDto.status}" /><br> <input type="button"
+				value="주문목록 보기" class="oderdetail">
+				<table class="detail">
+					<c:forEach var="oderDto" items="${oderlistDto.oderDtos}">
+						<tr>
+							<td><c:out value="${oderDto.menu}" /></td>
+							<td><c:out value="${oderDto.quantity}" /></td>
+						</tr>
+					</c:forEach>
+				</table>
+				<p>
+					총계 :
+					<c:out value="${oderlistDto.sum}" />
+					원</li>
+		</c:forEach>
 	</ul>
 	<footer>
 		<input type="button" value="주문 취소" class="btn btn-warning" id="delete"
@@ -116,7 +107,7 @@ footer {
 		var n = $('.oderNum').index(this);
 		num = $("input[name=oderNum]:eq(" + n + ")").val();
 	});
-	var webSocket = new WebSocket('ws://localhost:8080/webChatServer');
+	var webSocket = new WebSocket('ws://localhost:8080/kiosk/webChatServer');
 
 	webSocket.onerror = function(e) {
 		onError(e);
