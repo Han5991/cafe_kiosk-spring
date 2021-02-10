@@ -1,6 +1,4 @@
-<%@page import="com.model.dto.*"%>
-<%@page import="com.model.dao.OderDao"%>
-<%@page import="java.util.ArrayList"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -97,10 +95,6 @@ footer {
 			<li><a href="#">등록 기계 관리</a></li>
 		</ul>
 	</nav>
-	<%
-		ArrayList<oderlistDto> alloder = new ArrayList<oderlistDto>();
-	alloder = OderDao.getInstance().allOder("조리전");
-	%>
 	<h1
 		style="text-align: center; font-family: hzStyleFont; font-size: 25px; font-weight: bold;">
 		주문 접수 페이지 <select id="status">
@@ -113,95 +107,73 @@ footer {
 	<hr>
 	<div id="pop1">
 		<ul id="ul">
-			<%
-				for (oderlistDto oderlistDto : alloder) {
-			%>
-			<li class="oderNum">주문번호 : <%=oderlistDto.getOdernum()%><input
-				name="oderNum" type="hidden" value="<%=oderlistDto.getOdernum()%>">
-				<br> 주문시각 : <%=oderlistDto.getOderdate()%><br>주문상태 : <%=oderlistDto.getStatus()%><br>
-				<input type="button" value="주문목록 보기" class="oderdetail">
-				<table class="detail">
-					<%
-						for (oderDto dto : oderlistDto.getOderDtos()) {
-					%>
-					<tr>
-						<td><%=dto.getMenu()%></td>
-						<td><%=dto.getQuantity()%></td>
-					</tr>
-					<%
-						}
-					%>
-				</table>
-				<p>
-					총계 :
-					<%=oderlistDto.getSum()%>원</li>
-			<%
-				}
-			%>
+			<c:forEach var="oderlistDto" items="${ex}">
+				<li class="oderNum">주문번호 :<c:out value="${oderlistDto.odernum}" /><input
+					name="oderNum" type="hidden"
+					value="<c:out value="${oderlistDto.odernum}" />"> <br>
+					주문시각 : <c:out value="${oderlistDto.oderdate}" /><br> <input
+					type="button" value="주문목록 보기" class="oderdetail">
+					<table class="detail">
+						<c:forEach var="oderDto" items="${oderlistDto.oderDtos}">
+							<tr>
+								<td><c:out value="${oderDto.menu}" /></td>
+								<td><c:out value="${oderDto.quantity}" /></td>
+							</tr>
+						</c:forEach>
+					</table>
+					<p>
+						총계 :
+						<c:out value="${oderlistDto.sum}" />
+						원</li>
+			</c:forEach>
 		</ul>
 	</div>
-	<%
-		alloder = OderDao.getInstance().allOder("조리완료");
-	%>
+
 	<div id=pop2>
 		<ul id="ul">
-			<%
-				for (oderlistDto oderlistDto : alloder) {
-			%>
-			<li class="oderNum">주문번호 : <%=oderlistDto.getOdernum()%><input
-				name="oderNum" type="hidden" value="<%=oderlistDto.getOdernum()%>">
-				<br> 주문시각 : <%=oderlistDto.getOderdate()%><br>주문상태 : <%=oderlistDto.getStatus()%><br>
-				<input type="button" value="주문목록 보기" class="oderdetail">
-				<table class="detail">
-					<%
-						for (oderDto dto : oderlistDto.getOderDtos()) {
-					%>
-					<tr>
-						<td><%=dto.getMenu()%></td>
-						<td><%=dto.getQuantity()%></td>
-					</tr>
-					<%
-						}
-					%>
-				</table>
-				<p>
-					총계 :
-					<%=oderlistDto.getSum()%>원</li>
-			<%
-				}
-			%>
+		<c:forEach var="oderlistDto" items="${complete}">
+				<li class="oderNum">주문번호 :<c:out value="${oderlistDto.odernum}" /><input
+					name="oderNum" type="hidden"
+					value="<c:out value="${oderlistDto.odernum}" />"> <br>
+					주문시각 : <c:out value="${oderlistDto.oderdate}" /><br> <input
+					type="button" value="주문목록 보기" class="oderdetail">
+					<table class="detail">
+						<c:forEach var="oderDto" items="${oderlistDto.oderDtos}">
+							<tr>
+								<td><c:out value="${oderDto.menu}" /></td>
+								<td><c:out value="${oderDto.quantity}" /></td>
+							</tr>
+						</c:forEach>
+					</table>
+					<p>
+						총계 :
+						<c:out value="${oderlistDto.sum}" />
+						원</li>
+			</c:forEach>
 		</ul>
 	</div>
-	<%
-		alloder = OderDao.getInstance().allOder("조리취소");
-	%>
+	
 	<div id="pop3">
 		<ul id="ul">
-			<%
-				for (oderlistDto oderlistDto : alloder) {
-			%>
-			<li class="oderNum">주문번호 : <%=oderlistDto.getOdernum()%><input
-				name="oderNum" type="hidden" value="<%=oderlistDto.getOdernum()%>">
-				<br> 주문시각 : <%=oderlistDto.getOderdate()%><br>주문상태 : <%=oderlistDto.getStatus()%><br>
-				<input type="button" value="주문목록 보기" class="oderdetail">
-				<table class="detail">
-					<%
-						for (oderDto dto : oderlistDto.getOderDtos()) {
-					%>
-					<tr>
-						<td><%=dto.getMenu()%></td>
-						<td><%=dto.getQuantity()%></td>
-					</tr>
-					<%
-						}
-					%>
-				</table>
-				<p>
-					총계 :
-					<%=oderlistDto.getSum()%>원</li>
-			<%
-				}
-			%>
+			<c:forEach var="oderlistDto" items="${cancel}">
+				<li class="oderNum">주문번호 :<c:out value="${oderlistDto.odernum}" /><input
+					name="oderNum" type="hidden"
+					value="<c:out value="${oderlistDto.odernum}" />"> <br>
+					주문시각 : <c:out value="${oderlistDto.oderdate}" /><br> <input
+					type="button" value="주문목록 보기" class="oderdetail">
+					<table class="detail">
+						<c:forEach var="oderDto" items="${oderlistDto.oderDtos}">
+							<tr>
+								<td><c:out value="${oderDto.menu}" /></td>
+								<td><c:out value="${oderDto.quantity}" /></td>
+							</tr>
+						</c:forEach>
+					</table>
+					<p>
+						총계 :
+						<c:out value="${oderlistDto.sum}" />
+						원</li>
+			</c:forEach>
 		</ul>
 	</div>
 	<footer>

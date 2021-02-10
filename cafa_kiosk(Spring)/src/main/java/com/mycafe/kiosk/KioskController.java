@@ -183,6 +183,14 @@ public class KioskController {
 		} else if ("/admin_oderlist".equals(url)) {
 			returnUrl = "admin/oderlist";
 		} else if ("/admin_oderMagenment".equals(url)) {
+			ArrayList<oderlistDto> alloder = OderDao.getInstance().allOder("조리전");
+			model.addAttribute("ex", alloder);
+			alloder = OderDao.getInstance().allOder("조리완료");
+			model.addAttribute("complete", alloder);
+			alloder = OderDao.getInstance().allOder("조리취소");
+			model.addAttribute("cancel", alloder);
+			
+			
 			returnUrl = "admin/oder_Magenment";
 		}
 		return returnUrl;
