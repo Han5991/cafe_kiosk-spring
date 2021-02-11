@@ -66,21 +66,23 @@ public class MenuDao extends HttpServlet {
 		}
 	}
 
+	// 모든 메뉴 불러오기
 	public ArrayList<MenuDto> allmenu() {
 		ArrayList<MenuDto> menus = menuMapperinterface.allmenu();
 		return menus;
 	}
 
+	// 타입에 따른 메뉴 불러오기
 	public ArrayList<MenuDto> allmenuType(String type) {
 		ArrayList<MenuDto> menus = menuMapperinterface.allmenuType(type);
 		return menus;
 	}
-
+	// 하나의 메뉴 불러오기
 	public MenuDto oneMenu(String name) {
 		MenuDto menuDto = menuMapperinterface.onemenu(name);
 		return menuDto;
 	}
-
+	//메뉴 등록 이미지 파일이 오라클과 프로젝트 내에 저장이됨
 	public int insertMenu(HttpServletRequest request) {
 		MultipartRequest multi = null;
 		int fileSize = 1024 * 1024 * 10;
@@ -122,7 +124,7 @@ public class MenuDao extends HttpServlet {
 		}
 		return rownum;
 	}
-
+	// 메뉴 삭제 오라클과 프로젝트내의 이미지도 삭제
 	public int deleteMenu(String name) {
 		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk-spring\\cafa_kiosk(Spring)\\src\\main\\webapp\\resources\\img";
 		int result = 0;
@@ -148,7 +150,7 @@ public class MenuDao extends HttpServlet {
 		}
 		return result;
 	}
-
+	// 메뉴 업데이트 오라클과 프로젝트 내의 이미지 동기화
 	public int updateMenu(HttpServletRequest request) {
 		int result = 0;
 		getCon();
@@ -198,7 +200,7 @@ public class MenuDao extends HttpServlet {
 		}
 		return result;
 	}
-
+	//디저트 메뉴 재고 관리 메서드
 	public void updateinventory(HttpServletRequest request) {
 		String name[] = request.getParameterValues("menu");
 		String stock[] = request.getParameterValues("stock3");
@@ -216,7 +218,7 @@ public class MenuDao extends HttpServlet {
 			close();
 		}
 	}
-
+	//오라클의 이미지 출력
 	public void showImage(HttpServletRequest request, HttpServletResponse response) {
 		Connection con = null;
 		PreparedStatement stmt = null;

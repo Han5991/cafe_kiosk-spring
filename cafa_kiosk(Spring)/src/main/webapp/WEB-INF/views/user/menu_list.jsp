@@ -192,20 +192,22 @@ input {
 
 		<div class="dessert">
 			<c:forEach var="MenuDto" items="${dessert}">
-				<div class="menu">
-					<p>
-						<img src="showImage?key1=<c:out value="${MenuDto.name}" />"
-							height="200px" width="200px" name="img">
-					</p>
-					<p>
-						<input value="<c:out value="${MenuDto.name}" />" name="name1"
-							readonly="readonly">
-					</p>
-					<p>
-						<input value="<c:out value="${MenuDto.price}" />" name="price1"
-							readonly="readonly">
-					</p>
-				</div>
+				<c:if test="${MenuDto.stock>0}">
+					<div class="menu">
+						<p>
+							<img src="showImage?key1=<c:out value="${MenuDto.name}" />"
+								height="200px" width="200px" name="img">
+						</p>
+						<p>
+							<input value="<c:out value="${MenuDto.name}" />" name="name1"
+								readonly="readonly">
+						</p>
+						<p>
+							<input value="<c:out value="${MenuDto.price}" />" name="price1"
+								readonly="readonly">
+						</p>
+					</div>
+				</c:if>
 			</c:forEach>
 		</div>
 	</div>

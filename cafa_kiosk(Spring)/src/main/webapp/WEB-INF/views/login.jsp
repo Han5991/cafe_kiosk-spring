@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Bootstrap Example</title>
+<title>kiosklogin</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -65,9 +65,6 @@ footer {
 					<div id="id">
 						ID:<input type="text" placeholder="id" name="id">
 					</div>
-					<div id="pw">
-						PW:<input type="password" placeholder="password" name="pw">
-					</div>
 					<input type="submit" value="로그인" id="btn" size="50">
 				</form>
 			</div>
@@ -75,7 +72,7 @@ footer {
 	</div>
 
 	<footer class="container-fluid text-center">
-		<p>Footer Text</p>
+		<p>Copyright(c)2021 by 한상욱. All Page content is property of 한상욱</p>
 	</footer>
 
 </body>

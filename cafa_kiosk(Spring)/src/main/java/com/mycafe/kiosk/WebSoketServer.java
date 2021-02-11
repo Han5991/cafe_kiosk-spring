@@ -25,16 +25,11 @@ public class WebSoketServer extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static Map<Session, ClientDto> users = Collections.synchronizedMap(new HashMap<Session, ClientDto>());
-	private static Session session;
-
+	// 받아온 메시지를 넘겨줌
 	@OnMessage
 	public void onMsg(String message, Session session) throws IOException {
-//		String userName = users.get(session).getName();
 		message = OderDao.getInstance().getOneOder(message);
-		System.out.println("여기 나와? : "+message);
 		synchronized (users) {
-//			WebChatServer.session.getBasicRemote().sendText( message+ ","+userName);
-//			WebChatServer.session.getBasicRemote().sendText(message);
 			Iterator<Session> it = users.keySet().iterator();
 			while (it.hasNext()) {
 				Session currentSession = it.next();
@@ -42,44 +37,18 @@ public class WebSoketServer extends HttpServlet {
 			}
 		}
 	}
-
+	// 서버가 오픈되면 실행되는 메서드
 	@OnOpen
 	public void onOpen(Session session) {
-
 		ClientDto client = new ClientDto();
-
 		client.setName(ClientDto.getinstance().getName());
-//		if (client.getName().equals("admin"))
-//			WebSoketServer.session = session;
-
 		System.out.println(session + " connect");
-
 		users.put(session, client);
-//		sendNotice(client.getName() + "님이 입장 하셨습니다 현재 사용자 수 : " + users.size() + "紐�");
 	}
-
-//	public void sendNotice(String message) {
-//		String userName = "server";
-//		System.out.println(userName + " : " + message);
-//
-//		synchronized (users) {
-//			Iterator<Session> it = users.keySet().iterator();
-//			while (it.hasNext()) {
-//				Session currentSession = it.next();
-//				try {
-//					currentSession.getBasicRemote().sendText(userName + " : " + message);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//	}
-
+	// 서버가 닫히면 실행되는 메서드
 	@OnClose
 	public void onClose(Session session) {
-//		String userName = users.get(session).getName();
 		users.remove(session);
-//		sendNotice(userName + "님이 입장 하셨습니다 현재 사용자 수 : " + users.size() + "명");
 	}
 
 }

@@ -27,7 +27,7 @@ public class OderDao {
 	Connection connection;
 	PreparedStatement preparedStatement;
 	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BeanConfigClass.class);
-	MenuMapperinterface menuMapperinterface = context.getBean(MenuMapperinterface.class);
+	MenuMapperinterface oderMapperinterface = context.getBean(MenuMapperinterface.class);
 	private static OderDao admin = new OderDao();
 
 	public static synchronized OderDao getInstance() {
@@ -59,7 +59,7 @@ public class OderDao {
 			e.printStackTrace();
 		}
 	}
-
+	// 모든 주문 불러오기
 	@SuppressWarnings("unchecked")
 	public ArrayList<oderlistDto> allOder(String status) {
 		ArrayList<oderlistDto> alloder = new ArrayList<oderlistDto>();
@@ -101,7 +101,7 @@ public class OderDao {
 		}
 		return alloder;
 	}
-
+	// 하나의 주문만 불러오기(영수증 출력을 위한)
 	@SuppressWarnings("unchecked")
 	public String getOneOder(String num) {
 		InputStream in = null;
@@ -143,13 +143,9 @@ public class OderDao {
 		}
 		return oder;
 	}
-
+	//주문취소와 동시에 디저트 메뉴가 취소가 되면 취소된 만큼 재고 업데이트
 	@SuppressWarnings("unchecked")
 	public int deleteOder(String num) {
-		Blob menu = null;
-		byte[] buffer = null;
-		InputStream in = null;
-		ObjectInputStream ois = null;
 		ArrayList<oderDto> oderDtos = null;
 		ArrayList<String> name = new ArrayList<String>();
 		int s = 0, odernum = Integer.parseInt(num);
@@ -162,12 +158,12 @@ public class OderDao {
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
-				menu = resultSet.getBlob(1);
-				in = menu.getBinaryStream();
+				Blob menu = resultSet.getBlob(1);
+				InputStream in = menu.getBinaryStream();
 				s = (int) menu.length();
-				buffer = new byte[s];
+				byte[] buffer = new byte[s];
 				in.read(buffer, 0, s);
-				ois = new ObjectInputStream(new ByteArrayInputStream(buffer));
+				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(buffer));
 				oderDtos = (ArrayList<oderDto>) ois.readObject();
 			}
 
@@ -200,24 +196,13 @@ public class OderDao {
 		}
 		return odernum;
 	}
-
+	//조리시작 메서드
 	public int startOder(String num) {
 		int odernum = Integer.parseInt(num);
-		getCon();
-
-		try {
-			String sql = "update oder2 set status= '조리완료' where odernum=?";
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, odernum);
-			odernum = preparedStatement.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
+		odernum = oderMapperinterface.startoder(num);
 		return odernum;
 	}
-
+	//주문을 오라클 삽입 메서드
 	public int insertOder(ArrayList<oderDto> oderDtos, String sum) {
 		int odernum = 0;
 		try {
