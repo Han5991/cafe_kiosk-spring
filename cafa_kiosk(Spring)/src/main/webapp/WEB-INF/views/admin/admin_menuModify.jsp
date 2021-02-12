@@ -9,12 +9,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <style>
-.row.content {
-	height: 1119px;
-	text-align: center;
-	vertical-align: middle;
-}
-
 .menu {
 	width: 200px;
 	border: 1px solid lightgray;
