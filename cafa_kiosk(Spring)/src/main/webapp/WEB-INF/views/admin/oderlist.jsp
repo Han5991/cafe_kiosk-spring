@@ -107,7 +107,7 @@ footer {
 		var n = $('.oderNum').index(this);
 		num = $("input[name=oderNum]:eq(" + n + ")").val();
 	});
-	var webSocket = new WebSocket('ws://localhost:8080/kiosk/webChatServer');
+	var webSocket = new WebSocket('ws://localhost:8080/kiosk/webChatServer');//소켓통신 생성
 
 	webSocket.onerror = function(e) {
 		onError(e);
@@ -119,11 +119,9 @@ footer {
 		onMessage(e);
 	};
 
-	function onMessage(e) {
+	function onMessage(e) {//문자열의 형태로 넘어와 ,을 기준으로 배열로 만들어 처리해줌
 		var chatMsg = event.data;
-
 		var chatMsgs = chatMsg.split(",");
-
 		var $chat = "<li class='oderNum'>주문번호 : "
 				+ chatMsgs[chatMsgs.length - 4]
 				+ "<input name='oderNum' type='hidden' value='"+chatMsgs[chatMsgs.length-4]+"'> <br> 주문시각 : "
@@ -137,12 +135,10 @@ footer {
 			$chat2 += "<tr><td>" + chatMsgs[i] + "</td><td>" + chatMsgs[++i]
 					+ "</td></tr>";
 		}
-
 		var $chat3 = "</table><p>총계 : " + chatMsgs[chatMsgs.length - 2]
 				+ "원</li>";
-
 		$('#ul').append($chat + $chat2 + $chat3);
-
+		
 		$('.oderNum').click(function() {
 			var n = $('.oderNum').index(this);
 			num = $("input[name=oderNum]:eq(" + n + ")").val();

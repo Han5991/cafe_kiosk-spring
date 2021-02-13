@@ -77,44 +77,38 @@ public class MenuDao extends HttpServlet {
 		ArrayList<MenuDto> menus = menuMapperinterface.allmenuType(type);
 		return menus;
 	}
+
 	// 하나의 메뉴 불러오기
 	public MenuDto oneMenu(String name) {
 		MenuDto menuDto = menuMapperinterface.onemenu(name);
 		return menuDto;
 	}
-	//메뉴 등록 이미지 파일이 오라클과 프로젝트 내에 저장이됨
+
+	// 메뉴 등록 이미지 파일이 오라클과 프로젝트 내에 저장이됨
 	public int insertMenu(HttpServletRequest request) {
-		MultipartRequest multi = null;
-		int fileSize = 1024 * 1024 * 10;
-		String uploadFile = null;
-		String name = null;
-		String type = null;
+		int fileSize = 1024 * 1024 * 10; // 이미지 크기 설정
 		int rownum = 0;
-		int price = 0;
 
 		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk-spring\\cafa_kiosk(Spring)\\src\\main\\webapp\\resources\\img";
 		getCon();
-		try {
-			multi = new MultipartRequest(request, uploadPath, fileSize, "UTF-8", new DefaultFileRenamePolicy());
-			name = multi.getParameter("name");
-			price = Integer.parseInt(multi.getParameter("price"));
-			type = multi.getParameter("category");
-			uploadFile = multi.getFilesystemName("image");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		try { // 이미지 파일을 받기 위해선 MultipartRequest 타입으로 선언해줘야 한다.
+			MultipartRequest multi = new MultipartRequest(request, uploadPath, fileSize, "UTF-8",
+					new DefaultFileRenamePolicy());
+			String name = multi.getParameter("name");
+			int price = Integer.parseInt(multi.getParameter("price"));
+			String type = multi.getParameter("category");// db에서 검색하기 위한파일 이름 설정
+			String uploadFile = multi.getFilesystemName("image");
 
-		try {
 			File f = new File(uploadPath + "\\" + uploadFile);
 			File fileNew = new File(uploadPath + "\\" + type + uploadFile);
 			if (f.exists())
 				f.renameTo(fileNew);
-			FileInputStream fis = new FileInputStream(fileNew);
+			FileInputStream fis = new FileInputStream(fileNew);// 파일을 FileInputStream을 통해 저장
 
 			preparedStatement = connection.prepareStatement("insert into menu values(?,?,?,?,0)");
 			preparedStatement.setString(1, name);
 			preparedStatement.setInt(2, price);
-			preparedStatement.setBinaryStream(3, fis, (int) fileNew.length());
+			preparedStatement.setBinaryStream(3, fis, (int) fileNew.length());// 이미지를 Blob타입으로 넘기기 위해서 바이트스트림사용
 			preparedStatement.setString(4, fileNew.getName());
 			rownum = preparedStatement.executeUpdate();
 		} catch (Exception e) {
@@ -124,25 +118,23 @@ public class MenuDao extends HttpServlet {
 		}
 		return rownum;
 	}
+
 	// 메뉴 삭제 오라클과 프로젝트내의 이미지도 삭제
 	public int deleteMenu(String name) {
-		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk-spring\\cafa_kiosk(Spring)\\src\\main\\webapp\\resources\\img";
+		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk-spring\\"
+				+ "cafa_kiosk(Spring)\\src\\main\\webapp\\resources\\img";
 		int result = 0;
-		boolean de = false;
 		getCon();
-
 		try {
-			String sql = "delete from menu where imgname=?";
-			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, name);
-			result = preparedStatement.executeUpdate();
-
 			File f = new File(uploadPath + "\\" + name);
-			if (f.exists())
-				de = f.delete();
-
-			connection.close();
-			preparedStatement.close();
+			if (f.exists()) {
+				if (f.delete()) {
+					String sql = "delete from menu where imgname=?";
+					preparedStatement = connection.prepareStatement(sql);
+					preparedStatement.setString(1, name);
+					result = preparedStatement.executeUpdate();
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -150,27 +142,24 @@ public class MenuDao extends HttpServlet {
 		}
 		return result;
 	}
+
 	// 메뉴 업데이트 오라클과 프로젝트 내의 이미지 동기화
 	public int updateMenu(HttpServletRequest request) {
 		int result = 0;
 		getCon();
-		MultipartRequest multi = null;
 		int fileSize = 1024 * 1024 * 10;
-		String uploadFile = null;
-		String name = null;
-		String type = null;
-		String filename = null;
 		int rownum = 0;
-		int price = 0;
 		boolean update = false;
-		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk-spring\\cafa_kiosk(Spring)\\src\\main\\webapp\\resources\\img";
+		String uploadPath = "C:\\Users\\admin\\git\\cafe_kiosk-spring\\cafa_kiosk(Spring)"
+				+ "\\src\\main\\webapp\\resources\\img";
 		try {
-			multi = new MultipartRequest(request, uploadPath, fileSize, "UTF-8", new DefaultFileRenamePolicy());
-			name = multi.getParameter("name");
-			price = Integer.parseInt(multi.getParameter("price"));
-			type = multi.getParameter("category");
-			uploadFile = multi.getFilesystemName("image");
-			filename = multi.getParameter("filename");
+			MultipartRequest multi = new MultipartRequest(request, uploadPath, fileSize, "UTF-8",
+					new DefaultFileRenamePolicy());
+			String name = multi.getParameter("name");
+			int price = Integer.parseInt(multi.getParameter("price"));
+			String type = multi.getParameter("category");
+			String uploadFile = multi.getFilesystemName("image");
+			String filename = multi.getParameter("filename");
 
 			File f = new File(uploadPath + "\\" + uploadFile);
 			File fileNew = new File(uploadPath + "\\" + type + uploadFile);
@@ -190,9 +179,8 @@ public class MenuDao extends HttpServlet {
 			if (f.exists())
 				update = f.delete();
 
-			if (rownum > 0 && update == true) {
+			if (rownum > 0 && update == true)
 				System.out.println("메뉴 수정 성공");
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -200,7 +188,8 @@ public class MenuDao extends HttpServlet {
 		}
 		return result;
 	}
-	//디저트 메뉴 재고 관리 메서드
+
+	// 디저트 메뉴 재고 관리 메서드
 	public void updateinventory(HttpServletRequest request) {
 		String name[] = request.getParameterValues("menu");
 		String stock[] = request.getParameterValues("stock3");
@@ -218,7 +207,8 @@ public class MenuDao extends HttpServlet {
 			close();
 		}
 	}
-	//오라클의 이미지 출력
+
+	// 오라클의 이미지 출력
 	public void showImage(HttpServletRequest request, HttpServletResponse response) {
 		Connection con = null;
 		PreparedStatement stmt = null;

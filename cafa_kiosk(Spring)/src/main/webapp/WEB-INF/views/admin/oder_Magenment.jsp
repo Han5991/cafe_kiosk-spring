@@ -110,9 +110,10 @@ footer {
 			<c:forEach var="oderlistDto" items="${ex}">
 				<li class="oderNum">주문번호 :<c:out value="${oderlistDto.odernum}" /><input
 					name="oderNum" type="hidden"
-					value="<c:out value="${oderlistDto.odernum}" />"> <br>
-					주문시각 : <c:out value="${oderlistDto.oderdate}" /><br> <input
-					type="button" value="주문목록 보기" class="oderdetail">
+					value="<c:out value="${oderlistDto.odernum}" />"><br>
+					주문시각 : <c:out value="${oderlistDto.oderdate}" /><br>주문상태 : <c:out
+						value="${oderlistDto.status}" /><br> <input type="button"
+					value="주문목록 보기" class="oderdetail">
 					<table class="detail">
 						<c:forEach var="oderDto" items="${oderlistDto.oderDtos}">
 							<tr>
@@ -131,12 +132,13 @@ footer {
 
 	<div id=pop2>
 		<ul id="ul">
-		<c:forEach var="oderlistDto" items="${complete}">
+			<c:forEach var="oderlistDto" items="${complete}">
 				<li class="oderNum">주문번호 :<c:out value="${oderlistDto.odernum}" /><input
 					name="oderNum" type="hidden"
-					value="<c:out value="${oderlistDto.odernum}" />"> <br>
-					주문시각 : <c:out value="${oderlistDto.oderdate}" /><br> <input
-					type="button" value="주문목록 보기" class="oderdetail">
+					value="<c:out value="${oderlistDto.odernum}" />"><br>
+					주문시각 : <c:out value="${oderlistDto.oderdate}" /><br>주문상태 : <c:out
+						value="${oderlistDto.status}" /><br>
+				<input type="button" value="주문목록 보기" class="oderdetail">
 					<table class="detail">
 						<c:forEach var="oderDto" items="${oderlistDto.oderDtos}">
 							<tr>
@@ -152,15 +154,16 @@ footer {
 			</c:forEach>
 		</ul>
 	</div>
-	
+
 	<div id="pop3">
 		<ul id="ul">
 			<c:forEach var="oderlistDto" items="${cancel}">
 				<li class="oderNum">주문번호 :<c:out value="${oderlistDto.odernum}" /><input
 					name="oderNum" type="hidden"
 					value="<c:out value="${oderlistDto.odernum}" />"> <br>
-					주문시각 : <c:out value="${oderlistDto.oderdate}" /><br> <input
-					type="button" value="주문목록 보기" class="oderdetail">
+					주문시각 : <c:out value="${oderlistDto.oderdate}" /><br>주문상태 : <c:out
+						value="${oderlistDto.status}" /><br>
+				<input type="button" value="주문목록 보기" class="oderdetail">
 					<table class="detail">
 						<c:forEach var="oderDto" items="${oderlistDto.oderDtos}">
 							<tr>

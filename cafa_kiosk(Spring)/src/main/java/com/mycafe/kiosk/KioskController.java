@@ -30,7 +30,7 @@ public class KioskController {
 
 	// 로그인 하는 아이디에 따라서 관리자와 사용자를 구분
 	@RequestMapping(value = "/loginProcess.do", method = RequestMethod.POST)
-	public String loginProcess(@RequestParam String id, Model model) {
+	public String loginProcess(@RequestParam String id, Model model, HttpSession session) {
 
 		logger.info("Welcome " + id);
 		ClientDto.getinstance().setName(id);
@@ -86,7 +86,7 @@ public class KioskController {
 		return returnUrl;
 	}
 
-	@RequestMapping(value = "/showImage") // spring으로 옮길 때 한 쿼리문에서 전부 다룰 수 있게 해보자
+	@RequestMapping(value = "/showImage")
 	public void showImage(HttpServletRequest request, HttpServletResponse response) {
 		MenuDao.getInstance().showImage(request, response);
 	}

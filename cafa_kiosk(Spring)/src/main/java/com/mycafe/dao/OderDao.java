@@ -59,17 +59,10 @@ public class OderDao {
 			e.printStackTrace();
 		}
 	}
+
 	// 모든 주문 불러오기
-	@SuppressWarnings("unchecked")
 	public ArrayList<oderlistDto> allOder(String status) {
 		ArrayList<oderlistDto> alloder = new ArrayList<oderlistDto>();
-		InputStream in = null;
-		Blob menu = null;
-		int s = 0;
-		byte[] buffer = null;
-		ObjectInputStream ois = null;
-		ArrayList<oderDto> oderDtos = null;
-
 		try {
 			getCon();
 			String sql = "SELECT * FROM oder2 where status=? ORDER BY TO_NUMBER(odernum)";
@@ -83,13 +76,13 @@ public class OderDao {
 				oderlistDto.setSum(resultSet.getString(4));
 				oderlistDto.setStatus(resultSet.getString(5));
 
-				menu = resultSet.getBlob(2);
-				in = menu.getBinaryStream();
-				s = (int) menu.length();
-				buffer = new byte[s];
+				Blob menu = resultSet.getBlob(2);
+				InputStream in = menu.getBinaryStream();
+				int s = (int) menu.length();
+				byte[] buffer = new byte[s];
 				in.read(buffer, 0, s);
-				ois = new ObjectInputStream(new ByteArrayInputStream(buffer));
-				oderDtos = (ArrayList<oderDto>) ois.readObject();
+				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(buffer));
+				ArrayList<oderDto> oderDtos = (ArrayList<oderDto>) ois.readObject();
 				oderlistDto.setOderDtos(oderDtos);
 
 				alloder.add(oderlistDto);
@@ -101,15 +94,9 @@ public class OderDao {
 		}
 		return alloder;
 	}
+
 	// 하나의 주문만 불러오기(영수증 출력을 위한)
-	@SuppressWarnings("unchecked")
 	public String getOneOder(String num) {
-		InputStream in = null;
-		Blob menu = null;
-		int s = 0;
-		byte[] buffer = null;
-		ObjectInputStream ois = null;
-		ArrayList<oderDto> oderDtos = null;
 		String oder = "";
 		try {
 			getCon();
@@ -118,19 +105,18 @@ public class OderDao {
 			preparedStatement.setString(1, num);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-
-				menu = resultSet.getBlob(2);
-				in = menu.getBinaryStream();
-				s = (int) menu.length();
-				buffer = new byte[s];
+				Blob menu = resultSet.getBlob(2);
+				InputStream in = menu.getBinaryStream();
+				int s = (int) menu.length();
+				byte[] buffer = new byte[s];
 				in.read(buffer, 0, s);
-				ois = new ObjectInputStream(new ByteArrayInputStream(buffer));
-				oderDtos = (ArrayList<oderDto>) ois.readObject();
+				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(buffer));
+				ArrayList<oderDto> oderDtos = (ArrayList<oderDto>) ois.readObject();
+
 				for (oderDto a : oderDtos) {
 					oder += a.getMenu() + ",";
 					oder += a.getQuantity() + ",";
 				}
-
 				oder += resultSet.getString(1) + ",";
 				oder += resultSet.getString(3) + ",";
 				oder += resultSet.getString(4) + ",";
@@ -143,52 +129,45 @@ public class OderDao {
 		}
 		return oder;
 	}
-	//주문취소와 동시에 디저트 메뉴가 취소가 되면 취소된 만큼 재고 업데이트
-	@SuppressWarnings("unchecked")
+
+	// 주문취소와 동시에 디저트 메뉴가 취소가 되면 취소된 만큼 재고 업데이트
 	public int deleteOder(String num) {
 		ArrayList<oderDto> oderDtos = null;
 		ArrayList<String> name = new ArrayList<String>();
-		int s = 0, odernum = Integer.parseInt(num);
+		int odernum = Integer.parseInt(num);
 		getCon();
-
 		try {
-			String sql = "select oder from oder2 where odernum=?";
+			String sql = "select oder from oder2 where odernum=?";// 주문번호로 주문정보 가져옴
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, num);
 			resultSet = preparedStatement.executeQuery();
-
 			while (resultSet.next()) {
 				Blob menu = resultSet.getBlob(1);
 				InputStream in = menu.getBinaryStream();
-				s = (int) menu.length();
+				int s = (int) menu.length();
 				byte[] buffer = new byte[s];
 				in.read(buffer, 0, s);
 				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(buffer));
 				oderDtos = (ArrayList<oderDto>) ois.readObject();
 			}
-
-			sql = "SELECT name FROM menu where imgname LIKE 'dessert%'";
+			sql = "SELECT name FROM menu where imgname LIKE 'dessert%'";// 재고를 관리하는 디저트만 가져옴
 			preparedStatement = connection.prepareStatement(sql);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next())
 				name.add(resultSet.getString(1));
-
-			for (oderDto dto : oderDtos) {
+			for (oderDto dto : oderDtos)
 				for (String a : name)
 					if (a.equals(dto.getMenu())) {
-						sql = "update menu set stock=stock+? where name=?";
+						sql = "update menu set stock=stock+? where name=?";// 주문취소시 재고 업데이트
 						preparedStatement = connection.prepareStatement(sql);
 						preparedStatement.setString(1, dto.getQuantity());
 						preparedStatement.setString(2, dto.getMenu());
 						preparedStatement.executeQuery();
 					}
-			}
-
-			sql = "update oder2 set status= '조리취소' where odernum=?";
+			sql = "update oder2 set status= '조리취소' where odernum=?";// 주문상태 변경
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, odernum);
 			odernum = preparedStatement.executeUpdate();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -196,13 +175,15 @@ public class OderDao {
 		}
 		return odernum;
 	}
-	//조리시작 메서드
+
+	// 조리시작 메서드
 	public int startOder(String num) {
 		int odernum = Integer.parseInt(num);
 		odernum = oderMapperinterface.startoder(num);
 		return odernum;
 	}
-	//주문을 오라클 삽입 메서드
+
+	// 주문을 오라클 삽입 메서드
 	public int insertOder(ArrayList<oderDto> oderDtos, String sum) {
 		int odernum = 0;
 		try {
