@@ -160,20 +160,5 @@ footer {
 				.open(url, "receiptPrint",
 						"toolbar=no, menubar=no,scrollbar=yes, resizable=no, width=450,height=800");
 	}
-
-	// 	$('.oderNum').click(function() {
-	//		var n = $('.oderNum').index(this);
-	//		num = $("input[name=oderNum]:eq(" + n + ")").val();
-	//	});
-	//	$('.oderdetail').click(function() {
-	//		var n = $('.oderdetail').index(this);
-	//		if ($(".detail:eq(" + n + ")").css("display") == "none") {
-	//			$(".detail:eq(" + n + ")").show();
-	//			$(".oderdetail:eq(" + n + ")").val("주문목록 숨기기");
-	//		} else {
-	//			$(".detail:eq(" + n + ")").hide();
-	//			$(".oderdetail:eq(" + n + ")").val("주문목록 보기");
-	//		}
-	//	});
 </script>
 </html>

@@ -98,7 +98,7 @@ input {
 				<tr>
 					<th><img src="" height="200px" width="200px" id="img"><br>
 						<input type="text" readonly="readonly" id="name"><br>
-						<input type="text" readonly="readonly" id="price"></th>
+						<input type="text" readonly="readonly" id="price">원</th>
 				</tr>
 				<tr>
 					<th>수량</th>
