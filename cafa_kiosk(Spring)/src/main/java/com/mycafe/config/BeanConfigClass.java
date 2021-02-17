@@ -36,10 +36,9 @@ public class BeanConfigClass {
 	// Mapper
 	@Bean
 	public MapperFactoryBean<MenuMapperinterface> test_mapper(SqlSessionFactory factory) throws Exception {
-		MapperFactoryBean<MenuMapperinterface> factoryBean = new MapperFactoryBean<MenuMapperinterface>(MenuMapperinterface.class);
+		MapperFactoryBean<MenuMapperinterface> factoryBean = new MapperFactoryBean<MenuMapperinterface>(
+				MenuMapperinterface.class);
 		factoryBean.setSqlSessionFactory(factory);
 		return factoryBean;
 	}
-	
-	
 }

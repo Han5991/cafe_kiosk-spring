@@ -41,9 +41,9 @@ img {
 		enctype="multipart/form-data">
 		<div style="margin: 0 auto;">
 			<p>
-				<img src="" id="loadImg" width="300px" height="300px"
+				<img src="" id="loadImg" width="400px" height="300px"
 					style="margin-top: 20px;"
-					onerror="this.src='<spring:url value='/resources/img2/default_img.jpg'/>'">
+					onerror="this.src='<spring:url value='/resources/img2/default_img.png'/>'">
 			</p>
 			<p>
 				<input type="file" id="imgAttach" name="image" onchange="LoadImg()"
@@ -70,7 +70,7 @@ img {
 					autocomplete="off" required="required">
 			</p>
 			<p>
-				<input type="submit" value="추가" onclick="infoConfirm()">
+				<input type="submit" value="추가" onclick="infoConfirm();">
 			</p>
 		</div>
 	</form>

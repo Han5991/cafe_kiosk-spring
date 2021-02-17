@@ -102,10 +102,12 @@ public class KioskController {
 
 	// 메뉴 삭제
 	@RequestMapping(value = "/admin_menuDelete.do")
-	public String deletemenu(HttpServletRequest request, @RequestParam String name) {
+	public String deletemenu(HttpServletRequest request, @RequestParam String name, Model model) {
 		int a = MenuDao.getInstance().deleteMenu(name);
 		if (a == 1)
 			logger.info("메뉴 삭제 완료");
+		ArrayList<MenuDto> menuDtos = MenuDao.getInstance().allmenu();
+		model.addAttribute("menuDtos", menuDtos);
 		return "admin/admin_menuDelete";
 	}
 

@@ -42,7 +42,6 @@ public class WebSoketServer extends HttpServlet {
 	public void onOpen(Session session) {
 		ClientDto client = new ClientDto();
 		client.setName(ClientDto.getinstance().getName());
-		System.out.println(session + " connect");
 		users.put(session, client);
 	}
 	// 서버가 닫히면 실행되는 메서드
