@@ -113,10 +113,12 @@ public class KioskController {
 
 	// 메뉴 수정
 	@RequestMapping(value = "/admin_menuModifyOK.do")
-	public String updatemenu(HttpServletRequest request) {
+	public String updatemenu(HttpServletRequest request, Model model) {
 		int a = MenuDao.getInstance().updateMenu(request);
 		if (a == 1)
 			logger.info("메뉴 수정 완료");
+		ArrayList<MenuDto> menuDtos = MenuDao.getInstance().allmenu();
+		model.addAttribute("menuDtos", menuDtos);
 		return "admin/admin_menuModify";
 	}
 
@@ -192,6 +194,7 @@ public class KioskController {
 
 		} else if ("/admin_oderlist".equals(url)) {
 			returnUrl = "admin/oderlist";
+			
 		} else if ("/admin_oderMagenment".equals(url)) {
 			ArrayList<oderlistDto> alloder = OderDao.getInstance().allOder("조리전");
 			model.addAttribute("ex", alloder);
