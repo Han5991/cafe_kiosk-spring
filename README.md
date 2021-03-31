@@ -8,6 +8,7 @@ java:1.8
 tomcat : 9.0  
 oracle 11g  
 jsp : 4.0  
+spring 5.2.2  
 
 # 1. 사용방법
 1. store1 계정으로 접속시 나오는 화면  
