@@ -30,7 +30,7 @@ public class KioskController {
 
 	// 로그인 하는 아이디에 따라서 관리자와 사용자를 구분
 	@RequestMapping(value = "/loginProcess.do", method = RequestMethod.POST)
-	public String loginProcess(@RequestParam String id, Model model, HttpSession session) {
+	public String loginProcess(@RequestParam String id, Model model) {
 
 		logger.info("Welcome " + id);
 		ClientDto.getinstance().setName(id);
@@ -194,7 +194,7 @@ public class KioskController {
 
 		} else if ("/admin_oderlist".equals(url)) {
 			returnUrl = "admin/oderlist";
-			
+
 		} else if ("/admin_oderMagenment".equals(url)) {
 			ArrayList<oderlistDto> alloder = OderDao.getInstance().allOder("조리전");
 			model.addAttribute("ex", alloder);
