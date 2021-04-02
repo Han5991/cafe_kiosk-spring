@@ -25,6 +25,7 @@ public class WebSoketServer extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static Map<Session, ClientDto> users = Collections.synchronizedMap(new HashMap<Session, ClientDto>());
+
 	// 받아온 메시지를 넘겨줌
 	@OnMessage
 	public void onMsg(String message, Session session) throws IOException {
@@ -37,6 +38,7 @@ public class WebSoketServer extends HttpServlet {
 			}
 		}
 	}
+
 	// 서버가 오픈되면 실행되는 메서드
 	@OnOpen
 	public void onOpen(Session session) {
@@ -44,6 +46,7 @@ public class WebSoketServer extends HttpServlet {
 		client.setName(ClientDto.getinstance().getName());
 		users.put(session, client);
 	}
+
 	// 서버가 닫히면 실행되는 메서드
 	@OnClose
 	public void onClose(Session session) {
